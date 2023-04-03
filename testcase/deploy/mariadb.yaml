@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-04-01T09:15:30Z"
+  labels:
+    app: mariadb-pod
+  name: mariadb-pod
+spec:
+  containers:
+    - args:
+        - /opt/bitnami/scripts/mariadb/run.sh
+      env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: rootkit
+      image: docker.io/bitnami/mariadb:latest
+      name: mariadb
+      securityContext:
+        runAsNonRoot: true
+      volumeMounts:
+        - mountPath: /bitnami/mariadb
+          name: mariadb-storage-pvc
+  hostNetwork: true
+  hostname: CenterOfTheWorld
+  volumes:
+    - name: mariadb-storage-pvc
+      persistentVolumeClaim:
+        claimName: mariadb-storage
